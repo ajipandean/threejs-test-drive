@@ -1,0 +1,12 @@
+.app {}
+.app__title {
+  font-size: 32px;
+  font-weight: 700;
+  font-family: "Pacifico", cursive;
+  padding: 0.5em;
+  border: 4px solid #000;
+  position: absolute;
+  top: 0.7em;
+  left: 0.7em;
+  border-radius: 0.2em;
+}
