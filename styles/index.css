@@ -1,12 +1,17 @@
+body { height: 100vh; }
+canvas {
+  display: block;
+}
+
 .app {}
 .app__title {
+  color: #888;
   font-size: 32px;
   font-weight: 700;
   font-family: "Pacifico", cursive;
   padding: 0.5em;
-  border: 4px solid #000;
+  border-bottom: 4px solid #888;
   position: absolute;
   top: 0.7em;
   left: 0.7em;
-  border-radius: 0.2em;
 }
