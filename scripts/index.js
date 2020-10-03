@@ -32,8 +32,19 @@ scene.add(light);
 
 function render() {
   requestAnimationFrame(render);
-  box.rotation.x += 0.1;
-  box.rotation.y += 0.1;
   renderer.render(scene, camera);
 }
 render();
+
+let timeline = new TimelineMax({ paused: true });
+
+timeline.to(box.scale, 0.5, { x: 2, ease: Expo.easeOut });
+timeline.to(box.rotation, 0.5, { x: -2, ease: Expo.easeOut });
+timeline.to(box.scale, 0.5, { z: 2, ease: Expo.easeOut });
+timeline.to(box.rotation, 0.5, { z: Math.PI * 2, ease: Expo.easeOut });
+timeline.to(box.scale, 0.5, { x: 1, ease: Expo.easeOut });
+timeline.to(box.scale, 0.5, { z: 1, ease: Expo.easeOut }, "= -0.5");
+
+document.body.addEventListener('click', function () {
+  timeline.play();
+});
