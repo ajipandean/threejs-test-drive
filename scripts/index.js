@@ -22,9 +22,16 @@ window.addEventListener('resize', function () {
 
 let geometry = new THREE.BoxGeometry(1, 1, 1);
 let material = new THREE.MeshLambertMaterial({ color: 0xFFCC00 });
-let box = new THREE.Mesh(geometry, material);
+let x = -10;
 
-scene.add(box);
+for (let i = 0; i < 15; i++) {
+  let box = new THREE.Mesh(geometry, material);
+  box.position.x = (Math.random() - 0.5) * 10;
+  box.position.y = (Math.random() - 0.5) * 10;
+  box.position.z = (Math.random() - 0.5) * 10;
+  scene.add(box);
+  x++;
+}
 
 let light = new THREE.PointLight(0xFFFFFF, 1, 500);
 light.position.set(10, 0, 25);
@@ -36,15 +43,30 @@ function render() {
 }
 render();
 
-let timeline = new TimelineMax({ paused: true });
+let raycaster = new THREE.Raycaster();
+let mouse = new THREE.Vector2();
 
-timeline.to(box.scale, 0.5, { x: 2, ease: Expo.easeOut });
-timeline.to(box.rotation, 0.5, { x: -2, ease: Expo.easeOut });
-timeline.to(box.scale, 0.5, { z: 2, ease: Expo.easeOut });
-timeline.to(box.rotation, 0.5, { z: Math.PI * 2, ease: Expo.easeOut });
-timeline.to(box.scale, 0.5, { x: 1, ease: Expo.easeOut });
-timeline.to(box.scale, 0.5, { z: 1, ease: Expo.easeOut }, "= -0.5");
+window.addEventListener('click', function (event) {
+  event.preventDefault();
 
-document.body.addEventListener('click', function () {
-  timeline.play();
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+
+  let intersects = raycaster.intersectObjects(scene.children, true);
+
+  for (let i = 0; i < intersects.length; i++) {
+    let timeline = new TimelineMax();
+    timeline.to(intersects[i].object.scale, 0.5, { x: 2, ease: Expo.easeOut });
+    timeline.to(intersects[i].object.rotation, 0.5, { x: -2, ease: Expo.easeOut }, '= -0.5');
+    timeline.to(intersects[i].object.scale, 0.5, { z: 2, ease: Expo.easeOut });
+    timeline.to(intersects[i].object.scale, 0.5, { x: 1, ease: Expo.easeOut });
+    timeline.to(intersects[i].object.scale, 0.5, { z: 1, ease: Expo.easeOut }, '= -0.5');
+    timeline.to(intersects[i].object.position, 0.5, { x: 1, ease: Expo.easeOut });
+    timeline.to(intersects[i].object.rotation, 0.5, { x: 5, ease: Expo.easeOut });
+    timeline.to(intersects[i].object.scale, 0.5, { x: 4, ease: Expo.easeOut });
+    timeline.to(intersects[i].object.rotation, 0.5, { x: 0, ease: Expo.easeOut });
+    timeline.to(intersects[i].object.scale, 0.5, { x: 1, ease: Expo.easeOut }, '= -0.5');
+  }
 });
