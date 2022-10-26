@@ -9,7 +9,7 @@ let renderer = new THREE.WebGLRenderer();
 
 camera.position.z = 5;
 
-renderer.setClearColor("#F7F7F7");
+renderer.setClearColor("#F7F7F7");  
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 document.body.appendChild(renderer.domElement);
